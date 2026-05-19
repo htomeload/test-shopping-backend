@@ -1,0 +1,9 @@
+INSERT INTO [MyBackendDb].dbo.ProductTbl (Sku, Name, Price) VALUES
+('LAP-001', 'Pro Laptop', 999.99),
+('MOU-002', 'Wireless Mouse', 25.50),
+('KEY-003', 'Mechanical Keyboard', 80.00);
+
+INSERT INTO [MyBackendDb].dbo.StockTbl (ProductId, Quantity) VALUES
+(1, 10),
+(2, 50),
+(3, 25);

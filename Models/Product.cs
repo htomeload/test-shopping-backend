@@ -1,0 +1,15 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MyBackend.Models
+{
+    [Table("ProductTbl")]
+    public class Product
+    {
+        public int Id { get; set; }
+        public string Sku { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+
+        public Stock? Inventory { get; set; }
+    }
+}
