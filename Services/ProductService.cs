@@ -1,6 +1,6 @@
 using MyBackend.DTOs;
+using MyBackend.Extensions;
 using MyBackend.Interfaces;
-using MyBackend.Repositories;
 
 namespace MyBackend.Services
 {
@@ -10,12 +10,23 @@ namespace MyBackend.Services
 
         public async Task<IEnumerable<ProductDto>> GetAllProducts()
         {
-            return await _repository.QueryAllProducts();
+            var products = await _repository.QueryAllProducts();
+
+            var productsDto = new List<ProductDto>();
+
+            foreach (var product in products)
+            {
+                productsDto.Add(product.ToDto());
+            }
+
+            return productsDto;
         }
 
         public async Task<ProductDto?> GetOneProduct(int id)
         {
-            return await _repository.QueryOneProduct(id);
+            var product = await _repository.QueryOneProduct(id);
+
+            return product?.ToDto();
         }
     }
 }

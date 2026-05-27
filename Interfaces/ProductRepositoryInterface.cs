@@ -1,11 +1,11 @@
-using MyBackend.DTOs;
+using MyBackend.Entities;
 
 namespace MyBackend.Interfaces
 {
     public interface IProductRepository
     {
-        public Task<IEnumerable<ProductDto>> QueryAllProducts();
+        public Task<IEnumerable<Product>> QueryAllProducts();
 
-        public Task<ProductDto?> QueryOneProduct(int id);
+        public Task<Product?> QueryOneProduct(int id);
     }
 }

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using MyBackend.Entities;
+using MyBackend.DTOs;
 using MyBackend.Interfaces;
 
 namespace MyBackend.Controllers
@@ -17,16 +17,16 @@ namespace MyBackend.Controllers
 
         [HttpGet]
         [Route("GetAllProducts")]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAllProductsAsync()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProductsAsync()
         {
-            var product = await _service.GetAllProducts();
+            var products = await _service.GetAllProducts();
 
-            return Ok(product);
+            return Ok(products);
         }
 
         [HttpGet]
         [Route("GetProduct/{id}")]
-        public async Task<ActionResult<Product>> GetProductAsync(int id)
+        public async Task<ActionResult<ProductDto>> GetProductAsync(int id)
         {
             var product = await _service.GetOneProduct(id);
 
