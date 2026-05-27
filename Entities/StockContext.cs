@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace MyBackend.Models;
+namespace MyBackend.Entities;
 
 public class StockContext : DbContext
 {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MyBackend.Models
+namespace MyBackend.Entities
 {
     [Table("ProductTbl")]
     public class Product

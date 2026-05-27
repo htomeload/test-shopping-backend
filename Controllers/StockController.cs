@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyBackend.Models;
+using MyBackend.DTOs;
+using MyBackend.Interfaces;
 
 namespace MyBackend.Controllers
 {
@@ -8,23 +8,20 @@ namespace MyBackend.Controllers
     [ApiController]
     public class StockController : ControllerBase
     {
-        private readonly StockContext _context;
+        private readonly IStockService _service;
 
-        public StockController(StockContext context)
+        public StockController(IStockService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpPatch]
         [Route("UpdateProductStock/{id}")]
         public async Task<IActionResult> PatchProductStockAsync(int id, int newQuantity)
         {
-            var stock = await _context.Stocks.FirstOrDefaultAsync(s => s.ProductId == id);
+            var result = await _service.UpdateProductStock(id, newQuantity);
     
-            if (stock == null) return NotFound();
-
-            stock.Quantity = newQuantity;
-            await _context.SaveChangesAsync();
+            if (!result) return NotFound();
             
             return NoContent();
         }
@@ -33,28 +30,9 @@ namespace MyBackend.Controllers
         [Route("UpdateBatchStock")]
         public async Task<ActionResult> PostUpdateProductsStockAsync(List<StockUpdateDto> updates)
         {
-            // Extract all IDs from the request
-            var productIds = updates.Select(u => u.ProductId).ToList();
+            await _service.UpdateBatchProductsStock(updates);
 
-            // Fetch only the stocks that need updating
-            var stocksToUpdate = await _context.Stocks
-                .Where(s => productIds.Contains(s.ProductId))
-                .ToListAsync();
-
-            // Apply the new quantities
-            foreach (var update in updates)
-            {
-                var stock = stocksToUpdate.FirstOrDefault(s => s.ProductId == update.ProductId);
-                if (stock != null)
-                {
-                    stock.Quantity = update.NewQuantity;
-                }
-            }
-
-            // Save all changes in a single database transaction
-            await _context.SaveChangesAsync();
-
-            return Ok(new { Message = $"Successfully updated {stocksToUpdate.Count} items." });
+            return Ok(new { Message = $"Successfully updated {updates.Count} items." });
         }
     }
 }

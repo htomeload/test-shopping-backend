@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
-using MyBackend.Models;
+using MyBackend.Entities;
+using MyBackend.Interfaces;
+using MyBackend.Repositories;
+using MyBackend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,14 @@ builder.Services.AddDbContext<ProductContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("devCon")));
 builder.Services.AddDbContext<StockContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("devCon")));
+
+// Register the Repositories
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IStockRepository, StockRepository>();
+
+// Register the Services
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IStockService, StockService>();
 
 builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My Backend API", Version = "v1" });
